@@ -1,0 +1,19 @@
+# intermediate render/extract artifacts (regenerable)
+extract/
+pages/
+zoom/
+preview/
+crop/
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/chk*.png
+paper/hi*.png
+paper/hq*.png
+paper/vf*.png
+paper/*-*.png
+paper/t.pdf
+paper/t.tex
+paper/preview_writing.pdf
+texlive_install.log
+__pycache__/
