@@ -61,6 +61,11 @@
   \colorbox{cInsBg}{\textcolor{cInsert}{#1}}}
 % \miss{词}  灰色删除线  (口语漏读 / 未作答)
 \newcommand{\miss}[1]{\textcolor{gray}{\sout{#1}}}
+% \add{原词}{改正}  橙色波浪线 + "补"标签  (平台漏标、本卷补标的错误)
+\definecolor{cAdd}{HTML}{E65100}
+\newcommand{\add}[2]{%
+  \textcolor{cAdd}{\uwave{#1}}%
+  \,\textsuperscript{\textcolor{cAdd}{\footnotesize 补：#2}}}
 % 高亮(口语发音): 好/中/差
 \newcommand{\spk}[2]{\textcolor{#1}{#2}}
 
@@ -125,8 +130,8 @@
   \fix{改}{正}~修改/拼写\quad
   \del{删}~应删除\quad
   \ins{插}~应插入\quad
+  \add{补}{改正}~平台漏标(本卷补标)\quad
   {\color{cFix}\rule{1em}{0.6em}}~范文/正确\quad
-  {\color{cWrong}\rule{1em}{0.6em}}~你的错误\quad
   {\color{cNote}\rule{1em}{0.6em}}~AI 建议
   \end{tcolorbox}}
 
