@@ -1,3 +1,205 @@
+% PTE Core 模考 1B —— 写作 错题与详解·整理卷  版本 001（单文件自包含）
+% 编译: xelatex 本文件.tex   （需 Noto CJK + TeX Gyre Heros 字体；无外部图片）
+\documentclass[11pt]{article}
+
+% --------- 样式（原 ptestyle.sty，已内联）---------
+% ============================================================
+%  ptestyle.sty  —  PTE 模考错题整理卷 共享样式
+%  编译引擎: XeLaTeX  (中英混排, 需要 Noto CJK 字体)
+% ============================================================
+
+\usepackage[a4paper,margin=2cm,headsep=4mm]{geometry}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage[table]{xcolor}
+\usepackage[normalem]{ulem}        % \sout 删除线
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{needspace}
+\usepackage{tikz}
+
+% ---------- 字体 ----------
+\setmainfont{TeX Gyre Heros}            % 拉丁: Helvetica 风格(纤细清晰)
+\setCJKmainfont{Noto Sans CJK SC}
+\setCJKsansfont{Noto Sans CJK SC}
+\newfontfamily\cjkserif{Noto Serif CJK SC}
+\linespread{1.18}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+% ---------- 配色 ----------
+\definecolor{cWrong}{HTML}{D32F2F}     % 红  = 修改 / 错误
+\definecolor{cFix}{HTML}{1B7F3B}       % 绿  = 正确建议
+\definecolor{cDelete}{HTML}{1565C0}    % 蓝  = 删除
+\definecolor{cInsert}{HTML}{7B1FA2}    % 紫  = 插入
+\definecolor{cPartial}{HTML}{E07B00}   % 橙  = 部分得分
+\definecolor{cNote}{HTML}{0277BD}      % 蓝  = 注解
+\definecolor{cAccent}{HTML}{16A085}    % 主题青绿(平台主色)
+\definecolor{cWrongBg}{HTML}{FBE0E0}
+\definecolor{cDelBg}{HTML}{DCE8FB}
+\definecolor{cInsBg}{HTML}{EEE0F5}
+\definecolor{cHead}{HTML}{20303A}
+\definecolor{cGrayBox}{HTML}{F4F6F7}
+\definecolor{cModelBg}{HTML}{EAF7EF}
+\definecolor{cYouBg}{HTML}{FFF7F5}
+\definecolor{cNoteBg}{HTML}{EAF3FA}
+\definecolor{cRule}{HTML}{D7DEE2}
+
+% ---------- 行内批改宏 (复刻平台标注) ----------
+% \fix{原词}{正确}  红色删除线 + 绿色上标改正  (修改/拼写/空格)
+\newcommand{\fix}[2]{%
+  \colorbox{cWrongBg}{\textcolor{cWrong}{\sout{#1}}}%
+  \,\textsuperscript{\textcolor{cFix}{\footnotesize #2}}}
+% \del{原词}  蓝色删除线  (应删除)
+\newcommand{\del}[1]{%
+  \colorbox{cDelBg}{\textcolor{cDelete}{\sout{#1}}}%
+  \,\textsuperscript{\textcolor{cDelete}{\footnotesize 删}}}
+% \ins{词}  紫色下划线  (应插入)
+\newcommand{\ins}[1]{%
+  \textsuperscript{\textcolor{cInsert}{\footnotesize $\wedge$}}%
+  \colorbox{cInsBg}{\textcolor{cInsert}{#1}}}
+% \miss{词}  灰色删除线  (口语漏读 / 未作答)
+\newcommand{\miss}[1]{\textcolor{gray}{\sout{#1}}}
+% \add{原词}{改正}  橙色波浪线 + "补"标签  (平台漏标、本卷补标的错误)
+\definecolor{cAdd}{HTML}{E65100}
+\newcommand{\add}[2]{%
+  \textcolor{cAdd}{\uwave{#1}}%
+  \,\textsuperscript{\textcolor{cAdd}{\footnotesize 补：#2}}}
+% 高亮(口语发音): 好/中/差
+\newcommand{\spk}[2]{\textcolor{#1}{#2}}
+
+% ---------- 评分单元格着色 ----------
+\newcommand{\sfull}[1]{\textcolor{cFix}{\bfseries #1}}     % 满分
+\newcommand{\spart}[1]{\textcolor{cPartial}{\bfseries #1}} % 部分
+\newcommand{\szero}[1]{\textcolor{cWrong}{\bfseries #1}}   % 零/低分
+
+% ---------- 分数小标签 ----------
+\newtcbox{\chip}[1][cAccent]{on line, boxsep=2pt, left=4pt, right=4pt, top=1pt,
+  bottom=1pt, arc=3pt, colback=#1, colframe=#1, coltext=white, nobeforeafter,
+  fontupper=\bfseries\footnotesize}
+
+% ---------- 题块小标题 ----------
+\newcommand{\ptesub}[1]{%
+  \par\needspace{2\baselineskip}\smallskip
+  {\color{cAccent}\rule[-0.2ex]{3pt}{1.05em}}\hspace{6pt}%
+  {\bfseries\color{cHead}#1}\par\nopagebreak\smallskip}
+
+% ---------- 题块外框 ----------
+% \begin{qblock}{标号·题型}{右上信息(得分/用时)} ... \end{qblock}
+\newtcolorbox{qblock}[2]{
+  breakable, enhanced, arc=2.5pt,
+  colback=white, colframe=cRule, boxrule=0.6pt,
+  left=11pt, right=11pt, top=8pt, bottom=10pt,
+  toptitle=3pt, bottomtitle=3pt, lefttitle=11pt, righttitle=11pt,
+  colbacktitle=cHead, coltitle=white, fonttitle=\bfseries,
+  title={#1\hfill\normalfont\bfseries\small #2}}
+
+% ---------- 文本块: 题干 / 范文 / 你的作答 / 建议 ----------
+\newtcolorbox{promptbox}{enhanced, breakable, colback=cGrayBox, colframe=cGrayBox,
+  arc=2pt, left=8pt, right=8pt, top=6pt, bottom=6pt, boxrule=0pt}
+\newtcolorbox{modelbox}{enhanced, breakable, colback=cModelBg, colframe=cModelBg,
+  borderline west={3pt}{0pt}{cFix}, arc=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt, boxrule=0pt}
+\newtcolorbox{youbox}{enhanced, breakable, colback=cYouBg, colframe=cYouBg,
+  borderline west={3pt}{0pt}{cWrong}, arc=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt, boxrule=0pt}
+\newtcolorbox{notebox}{enhanced, breakable, colback=cNoteBg, colframe=cNoteBg,
+  borderline west={3pt}{0pt}{cNote}, arc=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt, boxrule=0pt}
+
+% ---------- 评分表 ----------
+% 用法见正文; 这里给表头宏
+\newcommand{\scorehead}{%
+  \rowcolors{2}{cGrayBox}{white}
+  \arrayrulecolor{cRule}}
+
+% ---------- 章节大标题 ----------
+\newcommand{\ptesection}[3]{% #1=中文名 #2=英文名 #3=该项分数
+  \needspace{6\baselineskip}
+  \begin{tcolorbox}[enhanced, colback=cAccent, colframe=cAccent, sharp corners,
+     left=14pt, right=14pt, top=10pt, bottom=10pt, boxrule=0pt]
+    {\fontsize{20}{24}\selectfont\bfseries\color{white} #1\ \ }%
+    {\large\color{white!85} #2}\hfill
+    {\large\color{white}本项得分\ \ }{\fontsize{22}{24}\selectfont\bfseries\color{white} #3}%
+    \ {\color{white!85}/ 90}
+  \end{tcolorbox}}
+
+% ---------- 颜色图例 ----------
+\newcommand{\ptelegend}{%
+  \begin{tcolorbox}[enhanced, colback=cGrayBox, colframe=cRule, boxrule=0.5pt,
+    arc=2pt, left=10pt, right=10pt, top=6pt, bottom=6pt]
+  {\bfseries\color{cHead}颜色说明\quad}
+  \fix{改}{正}~修改/拼写\quad
+  \del{删}~应删除\quad
+  \ins{插}~应插入\quad
+  \add{补}{改正}~平台漏标(本卷补标)\quad
+  {\color{cFix}\rule{1em}{0.6em}}~范文/正确\quad
+  {\color{cNote}\rule{1em}{0.6em}}~AI 建议
+  \end{tcolorbox}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\color{cHead}\bfseries PTE Core 模考 1B}
+\fancyhead[R]{\footnotesize\color{gray} 错题与详解整理卷}
+\fancyfoot[C]{\footnotesize\color{gray}\thepage}
+
+\begin{document}
+
+% --------- 封面（原 cover.tex）---------
+% ---------- 封面 / 成绩总览 ----------
+\definecolor{mListen}{HTML}{1F3A5F}
+\definecolor{mRead}{HTML}{C2D70B}
+\definecolor{mSpeak}{HTML}{4D4D4D}
+\definecolor{mWrite}{HTML}{A01B7D}
+
+\begin{titlepage}
+\thispagestyle{empty}
+\centering
+\vspace*{1.4cm}
+
+{\fontsize{30}{36}\selectfont\bfseries\color{cHead} PTE Core 模考 1B}\\[4mm]
+{\fontsize{17}{20}\selectfont\color{cAccent}\bfseries 错题与详解 · 整理卷}\\[3mm]
+{\color{gray} APEUni / 猩际 PTE 模考　·　提交时间 2026-06-21 12:36}\\[1.2cm]
+
+% ---- 总分 ----
+\begin{tcolorbox}[width=0.62\textwidth, halign=center, enhanced,
+  colback=cAccent, colframe=cAccent, arc=6pt, boxrule=0pt, top=10pt, bottom=10pt]
+  {\color{white}\large 总分 Overall}\\[2pt]
+  {\fontsize{46}{50}\selectfont\bfseries\color{white} 40}
+\end{tcolorbox}
+
+\vspace{1.0cm}
+
+% ---- 四项分数条形图 ----
+\begin{tcolorbox}[width=0.84\textwidth, enhanced, colback=white, colframe=cRule,
+  boxrule=0.8pt, arc=4pt, left=18pt, right=18pt, top=14pt, bottom=14pt]
+\setlength{\tabcolsep}{6pt}\renewcommand{\arraystretch}{1.7}
+\sffamily
+\begin{tabular}{@{}r@{\hskip 8pt}l@{\hskip 10pt}l@{}}
+ \bfseries Listening 听力 & {\color{mListen}\rule{3.67cm}{0.42cm}} & {\bfseries\large 33}\\
+ \bfseries Reading 阅读   & {\color{mRead}\rule{4.67cm}{0.42cm}}   & {\bfseries\large 42}\\
+ \bfseries Speaking 口语  & {\color{mSpeak}\rule{3.22cm}{0.42cm}}  & {\bfseries\large 29}\\
+ \bfseries Writing 写作   & {\color{mWrite}\rule{6.33cm}{0.42cm}}  & {\bfseries\large 57}\\
+\end{tabular}\\[2mm]
+{\footnotesize\color{gray} 满分 90　|　刻度: 条长 = 得分 / 90}
+\end{tcolorbox}
+
+\vfill
+\begin{flushleft}\small\color{gray}
+\textbf{说明:}本卷由本次模考的题目与"详解"截图逐题誊写、重新排版而成,完整保留每道题的
+\emph{题干 / 原文、范文、你的作答、逐项评分、彩色批改与 AI 中文建议}。\\
+所有错误按平台标注用颜色标出(见下方图例)。原始"详解"PDF 不可复制、仅截图,本卷内容均为人工对照誊录,若与原图有出入以原图为准。
+\end{flushleft}
+\vspace{4mm}
+\ptelegend
+\end{titlepage}
+
+% --------- 写作正文（原 sec_writing_body.tex）---------
 % ===================== 写作 Writing =====================
 \ptesection{写作}{Writing · Summarize Written Text + Write Email}{57}
 
@@ -203,3 +405,5 @@ Spelling 拼写             & \spart{1 / 2}   & 你犯了 2 个拼写错误\\
 \textbf{本题得分：}\ {\color{cAccent}\bfseries 12.2 / 15}\quad{\footnotesize\color{gray}（平台标注：I'm pleasure→I'm happy、the 应删除、I'mlooking 缺空格；\textcolor{cAdd}{补标：innovative 前缺动词 introduce}）}
 
 \end{qblock}
+
+\end{document}
