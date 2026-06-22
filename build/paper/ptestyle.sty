@@ -130,6 +130,22 @@
     {\large\bfseries\color{white} #1}\ \ {\color{white!80} #2}
   \end{tcolorbox}\smallskip}
 
+% ---------- 口语 AI 语音识别着色 (复刻平台: 优/良/差 + 停顿) ----------
+\definecolor{cSpkGood}{HTML}{2E9E5B}   % 优 绿
+\definecolor{cSpkOk}{HTML}{C77F00}     % 良 黄/琥珀
+\definecolor{cSpkBad}{HTML}{E0352B}    % 差 红
+\newcommand{\sg}[1]{\textcolor{cSpkGood}{#1}}   % 优
+\newcommand{\sy}[1]{\textcolor{cSpkOk}{#1}}     % 良
+\newcommand{\sr}[1]{\textcolor{cSpkBad}{#1}}    % 差
+\newcommand{\smiss}[1]{\textcolor{cSpkBad}{\sout{#1}}}  % 漏读 (红删除线)
+\newcommand{\pse}{{\color{gray}\,/\,}}          % 停顿
+\newcommand{\asrlegend}{{\footnotesize\color{gray}AI 语音识别\quad
+  {\color{cSpkGood}\textbullet}\,优\ \ {\color{cSpkOk}\textbullet}\,良\ \
+  {\color{cSpkBad}\textbullet}\,差\ \ {\color{gray}/}\,停顿\ \
+  {\color{cSpkBad}\sout{词}}\,漏读}}
+\newtcolorbox{asrbox}{enhanced, breakable, colback=white, colframe=cRule,
+  boxrule=0.6pt, arc=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt}
+
 % ---------- 颜色图例 ----------
 \newcommand{\ptelegend}{%
   \begin{tcolorbox}[enhanced, colback=cGrayBox, colframe=cRule, boxrule=0.5pt,

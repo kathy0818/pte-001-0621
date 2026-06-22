@@ -17,3 +17,4 @@ paper/t.tex
 paper/preview_*.pdf
 texlive_install.log
 __pycache__/
+paper/img/
