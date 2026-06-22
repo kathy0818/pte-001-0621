@@ -14,6 +14,6 @@ paper/vf*.png
 paper/*-*.png
 paper/t.pdf
 paper/t.tex
-paper/preview_writing.pdf
+paper/preview_*.pdf
 texlive_install.log
 __pycache__/
