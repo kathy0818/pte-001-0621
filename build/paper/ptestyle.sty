@@ -114,6 +114,7 @@
 
 % ---------- 章节大标题 ----------
 \newcommand{\ptesection}[3]{% #1=中文名 #2=英文名 #3=该项分数
+  \addcontentsline{toc}{section}{#1}%
   \needspace{6\baselineskip}
   \begin{tcolorbox}[enhanced, colback=cAccent, colframe=cAccent, sharp corners,
      left=14pt, right=14pt, top=10pt, bottom=10pt, boxrule=0pt]
@@ -125,6 +126,7 @@
 
 % ---------- 题型小节分隔 (口语 RA/RS/DI/RTS/ASQ 等) ----------
 \newcommand{\ptetask}[2]{%
+  \addcontentsline{toc}{subsection}{#1\ #2}%
   \needspace{4\baselineskip}\medskip
   \begin{tcolorbox}[enhanced, colback=cHead, colframe=cHead, sharp corners,
      left=12pt, right=12pt, top=5pt, bottom=5pt, boxrule=0pt]

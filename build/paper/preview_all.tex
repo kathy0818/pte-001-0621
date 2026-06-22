@@ -1,0 +1,34 @@
+\documentclass[11pt]{article}
+\usepackage{ptestyle}
+\renewcommand{\contentsname}{目录\quad Contents}
+\begin{document}
+\input{cover.tex}
+
+% ============ 目录 + 本卷概览 ============
+\clearpage
+\tableofcontents
+\bigskip
+
+{\large\bfseries\color{cAccent}本卷概览}\par\smallskip
+{\small
+\begin{tabularx}{\linewidth}{@{}l c >{\RaggedRight\arraybackslash}X r@{}}
+\rowcolor{cHead}\textcolor{white}{\bfseries 部分} & \textcolor{white}{\bfseries 题量} & \textcolor{white}{\bfseries 题型构成} & \textcolor{white}{\bfseries 本项得分}\\
+听力 Listening & 15 & SST · MCM-L · FIB-L\,$\times$3 · MCS-L · SMW\,$\times$2 · HIW\,$\times$3 · WFD\,$\times$4 & 33 / 90\\
+口语 Speaking & 30 & RA\,$\times$7 · RS\,$\times$11 · DI\,$\times$3 · RTS\,$\times$3 · ASQ\,$\times$6 & 29 / 90\\
+阅读 Reading & 16 & FIB\,$\times$5 · MCM\,$\times$2 · RO\,$\times$2 · FIB(R)\,$\times$5 · MCS\,$\times$2 & 42 / 90\\
+写作 Writing & \phantom{0}4 & SWT\,$\times$2 · WE\,$\times$2 & 57 / 90\\
+\end{tabularx}}
+\par\smallskip
+{\footnotesize\color{gray}总分 40（听力 33 / 阅读 42 / 口语 29 / 写作 57）。颜色与标注沿用各部分；本合订本顺序为「听·说·读·写」。}
+
+% ============ 四部分（听 → 说 → 读 → 写）============
+\clearpage
+\input{sec_listening_body.tex}
+\clearpage
+\input{sec_speaking_body.tex}
+\clearpage
+\input{sec_reading_body.tex}
+\clearpage
+\input{sec_writing_body.tex}
+
+\end{document}
