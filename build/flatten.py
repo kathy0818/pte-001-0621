@@ -6,14 +6,17 @@
 用法:
     python3 build/flatten.py <SEC> <CN> <EXAM> <NNN> [IMGDIR]
 例:
-    python3 build/flatten.py writing  写作 1B 000           # 纯文字 → 整理卷/000_..._写作_整理卷.tex
-    python3 build/flatten.py speaking 口语 1B 000 img       # 含图片 → 整理卷/000_..._口语_整理卷/（含 tex + img/）
+    python3 build/flatten.py writing  写作 1B 000           # 纯文字 → 整理卷/写作/000_..._写作_整理卷.tex
+    python3 build/flatten.py speaking 口语 1B 000 img       # 含图片 → 整理卷/口语/000_..._口语_整理卷/（含 tex + img/）
 
 说明:
-- 纯文字版本: 生成单文件 .tex 直接放在 整理卷/ 下（写作即如此）。
-- 含图片版本: 传入 IMGDIR（build/paper 下的图片目录名，如 img）。此时生成一个
-  **子文件夹** 整理卷/<NNN>_PTE模考<EXAM>_<CN>_整理卷/，里面放 .tex 和 img/，
+- 输出目录: 一律写入该 part 的子文件夹 整理卷/<CN>/（如 整理卷/听力/）。
+- 纯文字版本: 生成单文件 .tex 放在 整理卷/<CN>/ 下（写作/阅读/听力即如此）。
+- 含图片版本: 传入 IMGDIR（build/paper 下的图片目录名，如 img）。此时在 整理卷/<CN>/ 里生成一个
+  **子文件夹** <NNN>_PTE模考<EXAM>_<CN>_整理卷/，里面放 .tex 和 img/，
   这样「tex + 图片」是一个自包含的可移植单元（图片版本的版本规则，见 制作流程.md）。
+- 编译出 PDF 后，把该 part 的【最新版】PDF 复制到 整理卷/ 根目录并改成干净名
+  PTE模考<EXAM>_<CN>_整理卷.pdf（整理卷/ 根只放 4 个最终成品，见 制作流程.md §4）。
 - 之后到目标目录 `xelatex` 那个 .tex（跑两遍）得到同名 PDF。
 - 版本规则: **每个 part 各自从 000 起编号**，旧版本只读永不改。
 """
@@ -48,8 +51,8 @@ out = (
     "\\end{document}\n"
 )
 
-folder = root / "整理卷"
-folder.mkdir(exist_ok=True)
+folder = root / "整理卷" / CN
+folder.mkdir(parents=True, exist_ok=True)
 stem = f"{VER}_PTE模考{EXAM}_{CN}_整理卷"
 
 if IMGDIR and (base / IMGDIR).is_dir():
