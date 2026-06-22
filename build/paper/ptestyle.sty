@@ -122,6 +122,14 @@
     \ {\color{white!85}/ 90}
   \end{tcolorbox}}
 
+% ---------- 题型小节分隔 (口语 RA/RS/DI/RTS/ASQ 等) ----------
+\newcommand{\ptetask}[2]{%
+  \needspace{4\baselineskip}\medskip
+  \begin{tcolorbox}[enhanced, colback=cHead, colframe=cHead, sharp corners,
+     left=12pt, right=12pt, top=5pt, bottom=5pt, boxrule=0pt]
+    {\large\bfseries\color{white} #1}\ \ {\color{white!80} #2}
+  \end{tcolorbox}\smallskip}
+
 % ---------- 颜色图例 ----------
 \newcommand{\ptelegend}{%
   \begin{tcolorbox}[enhanced, colback=cGrayBox, colframe=cRule, boxrule=0.5pt,
