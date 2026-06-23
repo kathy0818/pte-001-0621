@@ -1,0 +1,499 @@
+% PTE Core 模考 1B —— 听力 逐题精讲与错词本（自包含）
+% 编译: xelatex 本文件.tex   （需 Noto CJK + TeX Gyre Heros 字体）
+% 本版本无外部图片，单文件即可复现。样式沿用「整理卷」ptestyle（已内联）。
+\documentclass[11pt]{article}
+
+% --------- 样式（原 ptestyle.sty，已内联）---------
+\usepackage[a4paper,margin=2cm,headsep=4mm]{geometry}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage[table]{xcolor}
+\usepackage[normalem]{ulem}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{pifont}
+\usepackage{needspace}
+
+% ---------- 字体 ----------
+\setmainfont{TeX Gyre Heros}
+\setCJKmainfont{Noto Sans CJK SC}
+\setCJKsansfont{Noto Sans CJK SC}
+\newfontfamily\cjkserif{Noto Serif CJK SC}
+\linespread{1.18}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+% ---------- 配色 ----------
+\definecolor{cWrong}{HTML}{D32F2F}
+\definecolor{cFix}{HTML}{1B7F3B}
+\definecolor{cDelete}{HTML}{1565C0}
+\definecolor{cInsert}{HTML}{7B1FA2}
+\definecolor{cPartial}{HTML}{E07B00}
+\definecolor{cNote}{HTML}{0277BD}
+\definecolor{cAccent}{HTML}{16A085}
+\definecolor{cWrongBg}{HTML}{FBE0E0}
+\definecolor{cDelBg}{HTML}{DCE8FB}
+\definecolor{cInsBg}{HTML}{EEE0F5}
+\definecolor{cHead}{HTML}{20303A}
+\definecolor{cGrayBox}{HTML}{F4F6F7}
+\definecolor{cModelBg}{HTML}{EAF7EF}
+\definecolor{cYouBg}{HTML}{FFF7F5}
+\definecolor{cNoteBg}{HTML}{EAF3FA}
+\definecolor{cRule}{HTML}{D7DEE2}
+\definecolor{cAdd}{HTML}{E65100}
+\definecolor{mListen}{HTML}{1F3A5F}
+
+% ---------- 行内批改宏 ----------
+\newcommand{\fix}[2]{%
+  \colorbox{cWrongBg}{\textcolor{cWrong}{\sout{#1}}}%
+  \,\textsuperscript{\textcolor{cFix}{\footnotesize #2}}}
+\newcommand{\del}[1]{%
+  \colorbox{cDelBg}{\textcolor{cDelete}{\sout{#1}}}%
+  \,\textsuperscript{\textcolor{cDelete}{\footnotesize 删}}}
+\newcommand{\ins}[1]{%
+  \textsuperscript{\textcolor{cInsert}{\footnotesize $\wedge$}}%
+  \colorbox{cInsBg}{\textcolor{cInsert}{#1}}}
+\newcommand{\add}[2]{%
+  \textcolor{cAdd}{\uwave{#1}}%
+  \,\textsuperscript{\textcolor{cAdd}{\footnotesize 补：#2}}}
+
+% ---------- 评分着色 ----------
+\newcommand{\sfull}[1]{\textcolor{cFix}{\bfseries #1}}
+\newcommand{\spart}[1]{\textcolor{cPartial}{\bfseries #1}}
+\newcommand{\szero}[1]{\textcolor{cWrong}{\bfseries #1}}
+
+% ---------- 对错符号 ----------
+\newcommand{\yes}{{\color{cFix}\ding{51}}}
+\newcommand{\no}{{\color{cWrong}\ding{55}}}
+
+% ---------- 题块小标题 ----------
+\newcommand{\ptesub}[1]{%
+  \par\needspace{2\baselineskip}\smallskip
+  {\color{cAccent}\rule[-0.2ex]{3pt}{1.05em}}\hspace{6pt}%
+  {\bfseries\color{cHead}#1}\par\nopagebreak\smallskip}
+
+% ---------- 题块外框 ----------
+\newtcolorbox{qblock}[2]{
+  breakable, enhanced, arc=2.5pt,
+  colback=white, colframe=cRule, boxrule=0.6pt,
+  left=11pt, right=11pt, top=8pt, bottom=10pt,
+  toptitle=3pt, bottomtitle=3pt, lefttitle=11pt, righttitle=11pt,
+  colbacktitle=cHead, coltitle=white, fonttitle=\bfseries,
+  title={#1\hfill\normalfont\bfseries\small #2}}
+
+% ---------- 文本块 ----------
+\newtcolorbox{promptbox}{enhanced, breakable, colback=cGrayBox, colframe=cGrayBox,
+  arc=2pt, left=8pt, right=8pt, top=6pt, bottom=6pt, boxrule=0pt}
+\newtcolorbox{modelbox}{enhanced, breakable, colback=cModelBg, colframe=cModelBg,
+  borderline west={3pt}{0pt}{cFix}, arc=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt, boxrule=0pt}
+\newtcolorbox{youbox}{enhanced, breakable, colback=cYouBg, colframe=cYouBg,
+  borderline west={3pt}{0pt}{cWrong}, arc=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt, boxrule=0pt}
+\newtcolorbox{notebox}{enhanced, breakable, colback=cNoteBg, colframe=cNoteBg,
+  borderline west={3pt}{0pt}{cNote}, arc=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt, boxrule=0pt}
+
+% ---------- 评分表头 ----------
+\newcommand{\scorehead}{%
+  \rowcolors{2}{cGrayBox}{white}
+  \arrayrulecolor{cRule}}
+
+% ---------- 章节大标题 ----------
+\newcommand{\ptesection}[3]{%
+  \needspace{6\baselineskip}
+  \begin{tcolorbox}[enhanced, colback=cAccent, colframe=cAccent, sharp corners,
+     left=14pt, right=14pt, top=10pt, bottom=10pt, boxrule=0pt]
+    {\fontsize{20}{24}\selectfont\bfseries\color{white} #1\ \ }%
+    {\large\color{white!85} #2}\hfill
+    {\large\color{white}本项得分\ \ }{\fontsize{22}{24}\selectfont\bfseries\color{white} #3}%
+    \ {\color{white!85}/ 90}
+  \end{tcolorbox}}
+
+% ---------- 中文翻译行 ----------
+\newcommand{\zh}[1]{{\footnotesize\textcolor{cNote}{\textbf{译}}\ \textcolor{gray}{#1}}}
+
+% ---------- 阅读/听力对错标注 ----------
+\newcommand{\rok}[1]{{\color{cFix}\ding{51}\,#1}}
+\newcommand{\rno}[2]{{\color{cWrong}\ding{55}\,\sout{#1}}\,{\footnotesize\color{cFix}(答案:\,#2)}}
+\newcommand{\hiw}[2]{{\color{cWrong}\uline{#1}}\,{\footnotesize\color{cFix}(听:#2)}}
+\newcommand{\lhit}[1]{{\color{cFix}#1}}
+\newcommand{\lmiss}[1]{{\color{cWrong}\sout{#1}}}
+
+% ---------- 颜色图例 ----------
+\newcommand{\ptelegend}{%
+  \begin{tcolorbox}[enhanced, colback=cGrayBox, colframe=cRule, boxrule=0.5pt,
+    arc=2pt, left=10pt, right=10pt, top=6pt, bottom=6pt]
+  {\bfseries\color{cHead}颜色说明\quad}
+  {\color{cFix}\ding{51}}~命中/正确\quad
+  {\color{cWrong}\ding{55}}~错/漏\quad
+  {\color{cWrong}\uline{红下划线}}~HIW 应点的错词\quad
+  {\color{cFix}\rule{1em}{0.6em}}~正确答案\quad
+  {\color{cNote}\rule{1em}{0.6em}}~技巧/建议
+  \end{tcolorbox}}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\color{cHead}\bfseries PTE Core 模考 1B}
+\fancyhead[R]{\footnotesize\color{gray} 听力 · 逐题精讲与错词本}
+\fancyfoot[C]{\footnotesize\color{gray}\thepage}
+
+\begin{document}
+
+% --------- 封面 ---------
+\begin{titlepage}
+\thispagestyle{empty}
+\centering
+\vspace*{1.6cm}
+
+{\fontsize{30}{36}\selectfont\bfseries\color{cHead} PTE Core 模考 1B}\\[4mm]
+{\fontsize{17}{20}\selectfont\color{cAccent}\bfseries 听力 · 逐题精讲与错词本}\\[3mm]
+{\color{gray} 错题复盘 · 目标满分　·　APEUni / 猩际 PTE 模考}\\[1.2cm]
+
+\begin{tcolorbox}[width=0.52\textwidth, halign=center, enhanced,
+  colback=mListen, colframe=mListen, arc=6pt, boxrule=0pt, top=10pt, bottom=10pt]
+  {\color{white}\large 听力 Listening}\\[2pt]
+  {\fontsize{40}{44}\selectfont\bfseries\color{white} 33}\ \ {\color{white!85}\large / 90}
+\end{tcolorbox}
+
+\vspace{1.0cm}
+
+\begin{flushleft}\small\color{gray}
+\textbf{用途：}把本套模考听力 15 题逐题讲透——每题含\emph{考点 / 你的作答 / 错因 / 技巧 / 下次不会错}，
+并提炼你本人的\emph{错词本}与\emph{提分清单}，服务于「备考到满分」。\\
+\textbf{数据源：}逐题誊录的录音原文、你的作答、正确答案与评分（见 \texttt{整理卷/听力/}）。如与原卷有出入，以原卷为准。
+\end{flushleft}
+\vspace{3mm}
+\ptelegend
+\end{titlepage}
+
+% ===================== 听力 =====================
+\ptesection{听力}{Listening · 逐题精讲与错词本}{33}
+
+% --------------------------------------------------
+\ptesub{一、丢分总览（先看大局）}
+
+每题的「原始得分点」（每题原始扣分点，非 90 分制换算分）：
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.2}
+{\scorehead
+\begin{tabular}{@{}llccc@{}}
+\textbf{题型} & \textbf{题号} & \textbf{得分} & \textbf{满分} & \textbf{丢} \\
+SST 概述口语 & Q1 & 7 & 10 & $-3$ \\
+MCM-L 多选 & Q2 & 1 & 2 & $-1$ \\
+\textbf{FIB-L 听力填空} & Q3–Q5 & 2 & 11 & \szero{$-9$} \\
+MCS-L 单选 & Q6 & 1 & 1 & \sfull{0} \\
+SMW 选词 & Q7–Q8 & 1 & 2 & $-1$ \\
+\textbf{HIW 找错词} & Q9–Q11 & 5 & 18 & \szero{$-13$} \\
+\textbf{WFD 听写句子} & Q12–Q15 & 15 & 34 & \szero{$-19$} \\
+\textbf{合计} & & \textbf{32} & \textbf{78} & \textbf{$-46$} \\
+\end{tabular}}
+\end{center}
+
+\textbf{46 个丢分点里，41 个集中在 WFD（$-19$）、HIW（$-13$）、FIB-L（$-9$）三类}，其余只丢 5 分。重点全砸这三类。
+而且这三类「一鱼两吃」：\textbf{WFD 同时算听力+写作}；\textbf{HIW 同时算听力+阅读}；\textbf{FIB-L 同时算听力+写作}——
+练好它们，听、读、写三项一起涨。
+
+\begin{notebox}\small
+\textbf{三大病根：}\\
+\textbf{1. 听辨没解码出来}（听成别的词）：ferry 听成 serious、legitimate 听成 magenal、hygiene 听成 highjeans、Experience 听成 Explosions、managerial role 听成 loyal raw lay。\\
+\textbf{2. 听对了却拼错：}expectation 写成 expantation、spectacle 写成 spectical、confection 写成 confaction、Background 写成 Backgound。\\
+\textbf{3. 策略问题：}HIW 太保守（6 个错词只点 1 个）、MCM 多勾一个倒扣、WFD 写音节假词 / 单复数错 / 同词写多遍。\\[2pt]
+\textbf{开挂提醒：}每题后的编号（WFD \#1667、SMW \#51、HIW \#70…）就是 \textbf{APEUni / 猩际题库的原题号}。
+WFD / SMW / HIW 高度依赖固定题库、\textbf{会反复重考}——背了就是分，这是冲 79+ 的捷径。
+\end{notebox}
+
+% --------------------------------------------------
+\ptesub{二、逐题精讲}
+
+% ===== Q1 =====
+\begin{qblock}{Q1\quad SST \#21\ \ Role of Education}{概述口语 · \textcolor{cAccent}{\bfseries 7 / 10}}
+\textbf{考点：}听 60–90 秒讲座，10 分钟写 50–70 词概括；五项各 2 分。你丢在\textbf{语法 0/2}、词汇 1/2。
+\ptesub{你的作答与错因}
+\begin{youbox}\small
+The education is important. The society has some journal challenges. The influence contain society and gender. The community has some critical skills.
+\end{youbox}
+\begin{enumerate}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+\item \textbf{The education / The society / The community}——抽象/不可数名词泛指时\textbf{不加 the}。
+\item \textbf{The influence contain}——主谓不一致（应 contains），且 contain 用词错（应 \emph{is influenced by}）。
+\item \textbf{journal}——听岔的词，句子不通，词汇丢分。
+\end{enumerate}
+\ptesub{技巧 · 下次不会错}
+\begin{notebox}\small
+背一个语法干净的模板，把语法+字数焊死，只填关键词：\\
+\emph{The speaker mainly discusses [主题], pointing out that [要点1]. In addition, the lecture explains [要点2], and emphasizes [要点3]. Overall, it concludes that [结论].}\\[2pt]
+\yes\ \textbf{下次不会错：}education/society/research 等不可数名词泛指不加 the；\textbf{交卷分两遍校对——第一遍只查冠词，第二遍只查动词单复数。}
+\end{notebox}
+\end{qblock}
+
+% ===== Q2 =====
+\begin{qblock}{Q2\quad MCM-L \#20\ \ Re-adjusting to Life}{多选（倒扣制）· \textcolor{cAccent}{\bfseries 1 / 2}}
+\textbf{考点：}多选\textbf{对 +1、错 $-1$、最低 0}。正确 \sfull{D、E}；你选 A、D、E，多勾的 A 倒扣 1 分。
+\ptesub{错因：把选项按原文归类}
+原文劈成两半：\textbf{大变化}（政府/技术/城乡）\,=\,能适应、明说「不是主要困难」；\textbf{小日常}（超市结账、对话参照框架）\,=\,真正的困难。
+\begin{center}\small
+\begin{tabular}{@{}clp{8.2cm}@{}}
+\no & A 技术变化 & 大变化，原文明说不算困难（你被关键词 technologies 钓走）\\
+\no & C 时区差异 & 开头「像倒时差」的比喻，非真困难 \\
+\no & F 政府更迭 & 大变化，可适应 \\
+\yes & D 日常行为方式 & 超市结账 = 小日常 \\
+\yes & E 对话参照框架 & frames of reference 变了 \\
+\end{tabular}
+\end{center}
+\ptesub{技巧 · 下次不会错}
+\begin{notebox}\small
+\yes\ \textbf{倒扣制，没把握不勾}；\textbf{「听到过 $\ne$ 是答案」}——干扰项专用「原文提过但答非所问」来设。
+每个选项问自己：原文是把它当成「题目所问的那类」讲的吗？
+\end{notebox}
+\end{qblock}
+
+% ===== Q3 =====
+\begin{qblock}{Q3\quad FIB-L \#155\ \ Transport Chaos}{听力填空 · \textcolor{cAccent}{\bfseries 1 / 4}}
+\textbf{考点：}屏幕显示带空文本+录音，边听边打字，\textbf{拼写算分}。
+\ptesub{逐空精析}
+\begin{center}\small
+\begin{tabular}{@{}cllp{7cm}@{}}
+\yes & apologized & apologized & 对 \\
+\no & serious & \textbf{ferry} & 听错+丢语境：「tram and \rule{0.8cm}{0.4pt} services」必是交通工具 \\
+\no & expantation & \textbf{expectation} & 听对拼错；词根 expect + ation \\
+\no & spectical & \textbf{spectacle} & 拼错；结尾 \textbf{-acle}（spectacle/miracle/obstacle）\\
+\end{tabular}
+\end{center}
+\ptesub{技巧 · 下次不会错}
+\begin{notebox}\small
+FIB-L 文本\textbf{提前显示}——录音前先给每空定性（词性/单复数/人或物），再用耳朵确认。\\
+\yes\ \textbf{下次不会错：}听对却拼错的词\textbf{按词根拼}；\textbf{-acle $\ne$ -icle}。
+\end{notebox}
+\end{qblock}
+
+% ===== Q4 =====
+\begin{qblock}{Q4\quad FIB-L \#164\ \ Dogs}{听力填空（本套最难）· \textcolor{cAccent}{\bfseries 0 / 3}}
+\ptesub{逐空精析}
+\begin{center}\small
+\begin{tabular}{@{}cllp{7cm}@{}}
+\no & highjeans & \textbf{hygiene} & 固定术语「hygiene hypothesis 卫生假说」\\
+\no & im & \textbf{childhood} & 「a common \rule{0.8cm}{0.4pt} infection」儿童感染 \\
+\no & rest & \textbf{respiratory} & 「\rule{0.8cm}{0.4pt} syncytial virus / RSV」——RSV 的 R = Respiratory \\
+\end{tabular}
+\end{center}
+\ptesub{技巧 · 下次不会错}
+\begin{notebox}\small
+医学/学术词靠两个锚点反推：\textbf{固定搭配}（\rule{0.8cm}{0.4pt} hypothesis）和\textbf{缩写}（RSV $=$ Respiratory…）。\\
+\yes\ \textbf{下次不会错：}听到缩写/术语搭配用它们反推全称；别交白卷写 im/rest。
+\end{notebox}
+\end{qblock}
+
+% ===== Q5 =====
+\begin{qblock}{Q5\quad FIB-L \#134\ \ Almonds}{听力填空 · \textcolor{cAccent}{\bfseries 1 / 4}}
+\ptesub{逐空精析}
+\begin{center}\small
+\begin{tabular}{@{}cllp{7cm}@{}}
+\yes & transforming & transforming & 对 \\
+\no & confaction & \textbf{confection} & 拼错；词根 \textbf{-fec-}（confection/infect/perfect）\\
+\no & cardiology & \textbf{cardiologists} & 词形错：「to \rule{0.6cm}{0.4pt} at hospitals」要的是\textbf{人}(复数)；-ologist=人，-ology=学科 \\
+\no & magenal & \textbf{legitimate} & 完全听错；「a \rule{0.6cm}{0.4pt} promotion…because healthy」正当的 \\
+\end{tabular}
+\end{center}
+\ptesub{技巧 · 下次不会错}
+\begin{notebox}\small
+\yes\ \textbf{下次不会错：}\textbf{-ology（学科）vs -ologist（人）由语境定}；con-\textbf{FEC}-tion 记牢词根。
+\end{notebox}
+\end{qblock}
+
+% ===== Q6 =====
+\begin{qblock}{Q6\quad MCS-L \#47\ \ Handball Violation}{单选 · \textcolor{cFix}{\bfseries 1 / 1}\ \yes}
+\textbf{为什么对：}问「下文讲什么」，讲座结尾连抛两问（无意/故意碰球算不算犯规）$\Rightarrow$ 下文必讲\textbf{意图(intention)} $\Rightarrow$ A。
+B(守门员)/C(裁判)/D(无规则) 都是提过的话题但非结尾走向。
+\ptesub{下次不会错（保持）}
+\begin{notebox}\small
+\yes\ 「下文/主旨」类单选，\textbf{答案在结尾走向}——结尾反复铺垫啥，下文讲啥；提过的话题是干扰。
+\end{notebox}
+\end{qblock}
+
+% ===== Q7 =====
+\begin{qblock}{Q7\quad SMW \#51\ \ Migration}{选词 · \textcolor{cFix}{\bfseries 1 / 1}\ \yes}
+\textbf{为什么对：}「means of \rule{0.8cm}{0.4pt}」+ 迁徙得以实现 $\Rightarrow$ \textbf{transportation}。
+你躲过音近干扰 \textbf{transition}；internet/airlines 被 19 世纪时代逻辑排除。
+\ptesub{下次不会错（保持）}
+\begin{notebox}\small
+\yes\ \textbf{搭配 + 时代/常识逻辑}双确认；警惕 transition / transportation 这种音近替身。
+\end{notebox}
+\end{qblock}
+
+% ===== Q8 =====
+\begin{qblock}{Q8\quad SMW \#48\ \ Worker Bee}{选词 · \textcolor{cWrong}{\bfseries 0 / 1}}
+\textbf{考点：}结尾被「哔」掉，靠逻辑补。正确 \sfull{C) loses her life}；你选 A) rescues herself（意思相反）。
+\ptesub{错因：听最后一句的逻辑链}
+「uses her sting \textbf{only once}, \textbf{for in doing so} she \rule{0.8cm}{0.4pt}」——「only once」+「for(因为)」锁死方向：
+必是\textbf{永久代价}（蜜蜂蜇人后带钩螫针被扯出 $\Rightarrow$ 死）。你被前文 self defense 带去想「保护自己」。
+\ptesub{技巧 · 下次不会错}
+\begin{notebox}\small
+\yes\ 抓\textbf{最后一句的逻辑连接词}（for/because/so/but）和\textbf{题眼词}（only once）定答案正负号，\textbf{先自己补一个词再选}。
+\end{notebox}
+\end{qblock}
+
+% ===== Q9 =====
+\begin{qblock}{Q9\quad HIW \#70\ \ Diabetes}{找错词（近义词替换）· \textcolor{cWrong}{\bfseries 1 / 6}}
+\textbf{屏幕印 $\to$ 录音念（6 个全是近义词）：}referred$\to$alluded、circumstances$\to$situations、rehabilitation$\to$therapy、intention$\to$objective、effect$\to$result、profited$\to$benefited。
+\ptesub{错因}
+近义替换 $\Rightarrow$ 句子意思通顺，\textbf{顺着意思读察觉不到}。你只抓第一个 referred，之后眼睛跟丢。
+\ptesub{技巧 · 下次不会错}
+\begin{notebox}\small
+\yes\ HIW \textbf{核音不核意}；意思通顺 $\ne$ 没错词；眼睛\textbf{全程焊在录音正念的词上}，逐词同步。
+\end{notebox}
+\end{qblock}
+
+% ===== Q10 =====
+\begin{qblock}{Q10\quad HIW \#317\ \ Classified Advertisements}{找错词（音近替换）· \textcolor{cWrong}{\bfseries 1 / 6}}
+\textbf{屏幕印 $\to$ 录音念（多为音近）：}newsprint$\to$newspapers、court$\to$code、\textbf{contrast$\to$contract}、rewarded$\to$awarded、\textbf{wary$\to$aware}、expose$\to$exploit。
+\ptesub{错因}
+contrast/contract、wary/aware 这种\textbf{音近词，同步就能撞出违和感}；你只点 1 个 $\Rightarrow$ \textbf{问题不是听不出，是眼睛没跟上录音}。
+\ptesub{技巧 · 下次不会错}
+\begin{notebox}\small
+\yes\ 音近替换只要同步就能抓——\textbf{专练逐词同步指读}，改掉跟丢的毛病。
+\end{notebox}
+\end{qblock}
+
+% ===== Q11 =====
+\begin{qblock}{Q11\quad HIW \#316\ \ to Travel Abroad}{找错词（你最好的 HIW）· \textcolor{cPartial}{\bfseries 3 / 6}}
+\ptesub{逐词}
+\begin{center}\small
+\begin{tabular}{@{}lllc@{}}
+\textbf{屏幕印} & \textbf{录音念} & \textbf{类型} & \textbf{你} \\
+massive & mass & 音近 & \no\ 漏 \\
+version & dimension & 近义 & \no\ 漏 \\
+eager & hungry & 近义 & \yes \\
+afield & away & 近义 & \yes \\
+leisure & lecture & 音近 & \no\ 漏 \\
+pretended & presented & 音近 & \yes \\
+\end{tabular}
+\end{center}
+\textbf{关键发现：}你连\textbf{近义词}都能抓到（说明听辨够），却漏掉最好抓的\textbf{音近词}(massive/mass、leisure/lecture)——又是同步跟丢。
+\ptesub{技巧 · 下次不会错}
+\begin{notebox}\small
+\yes\ 能力没问题，\textbf{把音近词也一并抓住就满分}，靠全程不松的同步。\\[2pt]
+\textbf{HIW 三题总账：}你点 5 个、\textbf{全对、零误点 $\Rightarrow$ 准头 100\%}，完全\textbf{可以更大胆}。
+一篇通常 5–7 个错，\textbf{目标全抓}，只点 1 个 = 主动送 5 分。HIW 是你\textbf{单题涨分最快}的题型。
+\end{notebox}
+\end{qblock}
+
+% ===== Q12 =====
+\begin{qblock}{Q12\quad WFD \#1667}{听写句子 · \textcolor{cWrong}{\bfseries 3 / 8}}
+\textbf{正确：}Different factors affect the freezing time of water.\quad\zh{不同的因素会影响水的结冰时间。}
+\ptesub{你的作答（\lhit{绿}=命中，{\color{gray}(灰)}=漏写，\lmiss{红删}=多写）}
+{\small\lhit{Different} {\color{gray}(factors affect the freezing)} \lhit{water} \lmiss{often} \lhit{time} {\color{gray}(of)} \lmiss{times}}
+\ptesub{错因 · 技巧 · 下次不会错}
+\begin{notebox}\small
+抓住头(Different)尾(water/time)，中间整块丢 $\Rightarrow$ 短时记忆不够、没记笔记。\\
+切\textbf{意群}记：[Different factors] [affect the freezing time] [of water]；录音一响在草稿板记首字母。\\
+\yes\ \textbf{下次不会错：}\textbf{按意群记}；功能词 the/of 必写；别用 often/times 碎词填空。\quad 题库 \#1667，背。
+\end{notebox}
+\end{qblock}
+
+% ===== Q13 =====
+\begin{qblock}{Q13\quad WFD \#1666}{听写句子 · \textcolor{cPartial}{\bfseries 6 / 8}}
+\textbf{正确：}The subject is complex and difficult to explain.\quad\zh{这个主题复杂且难以解释。}
+\ptesub{你的作答}
+{\small\lhit{The subject is} {\color{gray}(complex and)} \lmiss{somtimes} \lhit{difficult to explain}}
+\ptesub{错因 · 下次不会错}
+\begin{notebox}\small
+把「complex and」听岔成 sometimes $\Rightarrow$ \textbf{既丢真词又加错词}。\\
+\yes\ \textbf{下次不会错：}中间没听清\textbf{别用「听着顺的词」硬填}；sometimes 是一个词。\quad 题库 \#1666。
+\end{notebox}
+\end{qblock}
+
+% ===== Q14 =====
+\begin{qblock}{Q14\quad WFD \#1665}{听写句子（最惨）· \textcolor{cWrong}{\bfseries 1 / 9}}
+\textbf{正确：}Experience would be an advantage for this managerial role.\quad\zh{经验对这个管理职位将是一项优势。}
+\ptesub{你的作答}
+{\small {\color{gray}(Experience would be an advantage)} \lmiss{Explosions is} \lhit{for} {\color{gray}(this managerial role)} \lmiss{loyal raw lay}}
+\ptesub{错因 · 技巧 · 下次不会错}
+\begin{notebox}\small
+整句没解码——Experience$\to$Explosions、managerial role$\to$loyal raw lay，写了一串\textbf{假词（0 分还费时）}。\\
+\textbf{双管：}\textbf{(1)} 这是题库 \textbf{\#1665 原题，直接背}；\textbf{(2)} 没背到时\textbf{只写确定的真词}(would/be/an/for/role)，\textbf{绝不写音节乱码}。\\
+\yes\ \textbf{下次不会错：}听不懂的整句靠背题库；没背到只写确定真词，不写假词。
+\end{notebox}
+\end{qblock}
+
+% ===== Q15 =====
+\begin{qblock}{Q15\quad WFD \#1663}{听写句子 · \textcolor{cPartial}{\bfseries 5 / 9}}
+\textbf{正确：}Background music can help students concentrate on their studies.\quad\zh{背景音乐能帮助学生集中精力学习。}
+\ptesub{你的作答}
+{\small {\color{gray}(Background)} \lmiss{Backgound} \lhit{music can help} {\color{gray}(students)} \lmiss{student make more} \lhit{concentrate} \lmiss{concentrations concentration} \lhit{on} {\color{gray}(their studies)} \lmiss{study}}
+\ptesub{错因（你完全听懂了，纯执行翻车，本该 9/9）}
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=2pt]
+\item \textbf{Backgound} 漏 r（拼写）；\textbf{student} 应复数 students；漏 \textbf{their}；\textbf{study} 应 studies。
+\item 多写 make more、concentrate/concentration/concentrations（同词三版本）。
+\end{itemize}
+\ptesub{WFD 收尾三铁律 · 下次不会错}
+\begin{notebox}\small
+\textbf{(1)} 拼写（Back-\textbf{g-r}-ound）；\textbf{(2)} 单复数完全一致（students/their/studies）；\textbf{(3)} 一个词只写一个版本，删多余/重复词。\\
+\yes\ \textbf{下次不会错：}听懂 $\ne$ 拿分；\textbf{交卷前必查：拼写、单复数(-s/-es)、删多余与重复词。}\quad 题库 \#1663。
+\end{notebox}
+\end{qblock}
+
+% --------------------------------------------------
+\ptesub{三、你的专属错词本（这套卷暴露出来的真实错词）}
+
+\begin{notebox}\small
+\textbf{A. 听辨易错}（听成了别的词 $\to$ 练影子跟读/听写）：\\
+ferry(你→serious) · legitimate(→magenal) · hygiene(→highjeans) · respiratory(→rest) · childhood(→im) ·
+Experience(→Explosions) · managerial role(→loyal raw lay) · complex and(→sometimes)。\\
+HIW 漏掉的：alluded / situations / therapy / objective / result / benefited / dimension / mass / lecture。
+\end{notebox}
+
+\begin{notebox}\small
+\textbf{B. 拼写易错}（听对却拼错 $\to$ 纯送分，天天默写）：\\
+expectation(非 expantation) · spectacle(非 spectical，-acle) · confection(非 confaction，-fec-) ·
+Background(非 Backgound，别丢 r) · sometimes(一个词) · students / studies(复数 -s) · cardiologists(非 cardiology，-ist=人)。
+\end{notebox}
+
+% --------------------------------------------------
+\ptesub{四、提分优先级 + 每日练习}
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.25}
+{\scorehead
+\begin{tabularx}{\linewidth}{@{}clX@{}}
+\textbf{优先} & \textbf{题型} & \textbf{为什么 / 每天练} \\
+1 & \textbf{WFD} & 丢 19，双算写作，\textbf{题库会重考}：背 WFD 高频题库 20–30 句；意群速记；查拼写/单复数 \\
+2 & \textbf{HIW} & 丢 13，双算阅读，你准头 100\% 只是跟丢：5–8 篇/天，练逐词同步指读、核音不核意、大胆点 \\
+3 & \textbf{FIB-L} & 丢 9，双算写作：语境预判每空 + 背术语搭配 + 默写「拼写易错表」 \\
+4 & SST & $-3$，靠模板补：背 1 模板，每周 3 篇，专练冠词/单复数两遍校对 \\
+5 & MCM/SMW & 各 $-1$：记牢「倒扣不乱选」「听结尾逻辑」 \\
+\end{tabularx}}
+\end{center}
+
+\begin{notebox}\small
+\textbf{总纲：}听力瓶颈不在天赋，在两件事——\textbf{(1)} \textbf{把听库背熟}（WFD/SMW/HIW 会重考，背了就是分）；
+\textbf{(2)} 补\textbf{连读解码}和\textbf{拼写}两个基本功（影子跟读 + 默写错词本）。做扎实，听力 70+ 很现实，冲满分有明确路径。
+\end{notebox}
+
+% --------------------------------------------------
+\ptesub{五、各题型「满分要诀」速查表}
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.25}
+{\scorehead
+\begin{tabularx}{\linewidth}{@{}lXl@{}}
+\textbf{题型} & \textbf{一句话要诀} & \textbf{本次栽的坑} \\
+SST & 套语法模板焊死字数+语法；交卷查「不可数加 the / 动词单复数」 & The education、contain \\
+MCM-L & 倒扣制没把握不选；「听到 $\ne$ 答案」，抓 however 后的答案区 & 多勾「不算困难」的 A \\
+FIB-L & 先用语境预判每空(词性/单复数/人或物)，认术语，建拼写本 & 一半听错、一半拼错 \\
+MCS-L & 答案在\textbf{结尾走向}——结尾铺垫啥，下文讲啥 & （对了，保持）\\
+SMW & 听最后一句逻辑(for/but)+题眼(only once)，先自己预判 & Worker Bee 选反 \\
+HIW & 眼睛焊在正念的词上\textbf{核音不核意}；准头够就大胆多点，目标全抓 & 6 个错词只点 1 个 \\
+WFD & 草稿板意群速记；只写真词；功能词全写；死磕单复数拼写；\textbf{背题库} & 假词、漏 s、一词写三遍 \\
+\end{tabularx}}
+\end{center}
+
+\vspace{2mm}
+{\footnotesize\color{gray}\emph{本笔记依据 PTE Core 模考 1B 听力 15 题逐题复盘整理。如与原图/原卷有出入，以原卷为准。}}
+
+\end{document}
