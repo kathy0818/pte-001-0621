@@ -1,0 +1,335 @@
+% PTE Core 模考 1B —— 口语 逐题精讲与技巧模板（自包含）
+% 编译: xelatex 本文件.tex   （需 Noto CJK + TeX Gyre Heros 字体）
+\documentclass[11pt]{article}
+
+% --------- 样式（原 ptestyle.sty，已内联）---------
+\usepackage[a4paper,margin=2cm,headsep=4mm]{geometry}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage[table]{xcolor}
+\usepackage[normalem]{ulem}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{needspace}
+
+% ---------- 字体 ----------
+\setmainfont{TeX Gyre Heros}
+\setCJKmainfont{Noto Sans CJK SC}
+\setCJKsansfont{Noto Sans CJK SC}
+\newfontfamily\cjkserif{Noto Serif CJK SC}
+\linespread{1.18}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+% ---------- 配色 ----------
+\definecolor{cWrong}{HTML}{D32F2F}
+\definecolor{cFix}{HTML}{1B7F3B}
+\definecolor{cDelete}{HTML}{1565C0}
+\definecolor{cInsert}{HTML}{7B1FA2}
+\definecolor{cPartial}{HTML}{E07B00}
+\definecolor{cNote}{HTML}{0277BD}
+\definecolor{cAccent}{HTML}{16A085}
+\definecolor{cWrongBg}{HTML}{FBE0E0}
+\definecolor{cHead}{HTML}{20303A}
+\definecolor{cGrayBox}{HTML}{F4F6F7}
+\definecolor{cModelBg}{HTML}{EAF7EF}
+\definecolor{cYouBg}{HTML}{FFF7F5}
+\definecolor{cNoteBg}{HTML}{EAF3FA}
+\definecolor{cRule}{HTML}{D7DEE2}
+\definecolor{mSpeak}{HTML}{4D4D4D}
+
+% ---------- 评分着色 ----------
+\newcommand{\sfull}[1]{\textcolor{cFix}{\bfseries #1}}
+\newcommand{\spart}[1]{\textcolor{cPartial}{\bfseries #1}}
+\newcommand{\szero}[1]{\textcolor{cWrong}{\bfseries #1}}
+\newcommand{\hl}[1]{\textcolor{cWrong}{\bfseries #1}}   % 标红：读错/漏掉的词
+\newcommand{\good}[1]{\textcolor{cFix}{\bfseries #1}}
+
+% ---------- 题块小标题 ----------
+\newcommand{\ptesub}[1]{%
+  \par\needspace{2\baselineskip}\smallskip
+  {\color{cAccent}\rule[-0.2ex]{3pt}{1.05em}}\hspace{6pt}%
+  {\bfseries\color{cHead}#1}\par\nopagebreak\smallskip}
+
+% ---------- 题块外框 ----------
+\newtcolorbox{qblock}[2]{
+  breakable, enhanced, arc=2.5pt,
+  colback=white, colframe=cRule, boxrule=0.6pt,
+  left=11pt, right=11pt, top=8pt, bottom=10pt,
+  toptitle=3pt, bottomtitle=3pt, lefttitle=11pt, righttitle=11pt,
+  colbacktitle=cHead, coltitle=white, fonttitle=\bfseries,
+  title={#1\hfill\normalfont\bfseries\small #2}}
+
+% ---------- 文本块 ----------
+\newtcolorbox{promptbox}{enhanced, breakable, colback=cGrayBox, colframe=cGrayBox,
+  arc=2pt, left=8pt, right=8pt, top=6pt, bottom=6pt, boxrule=0pt}
+\newtcolorbox{modelbox}{enhanced, breakable, colback=cModelBg, colframe=cModelBg,
+  borderline west={3pt}{0pt}{cFix}, arc=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt, boxrule=0pt}
+\newtcolorbox{notebox}{enhanced, breakable, colback=cNoteBg, colframe=cNoteBg,
+  borderline west={3pt}{0pt}{cNote}, arc=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt, boxrule=0pt}
+
+\newcommand{\scorehead}{\rowcolors{2}{cGrayBox}{white}\arrayrulecolor{cRule}}
+
+% ---------- 章节大标题 ----------
+\newcommand{\ptesection}[3]{%
+  \needspace{6\baselineskip}
+  \begin{tcolorbox}[enhanced, colback=cAccent, colframe=cAccent, sharp corners,
+     left=14pt, right=14pt, top=10pt, bottom=10pt, boxrule=0pt]
+    {\fontsize{20}{24}\selectfont\bfseries\color{white} #1\ \ }%
+    {\large\color{white!85} #2}\hfill
+    {\large\color{white}本项得分\ \ }{\fontsize{22}{24}\selectfont\bfseries\color{white} #3}%
+    \ {\color{white!85}/ 90}
+  \end{tcolorbox}}
+
+% ---------- 题型小节分隔 ----------
+\newcommand{\ptetask}[2]{%
+  \needspace{4\baselineskip}\medskip
+  \begin{tcolorbox}[enhanced, colback=cHead, colframe=cHead, sharp corners,
+     left=12pt, right=12pt, top=5pt, bottom=5pt, boxrule=0pt]
+    {\large\bfseries\color{white} #1}\ \ {\color{white!80} #2}
+  \end{tcolorbox}\smallskip}
+
+% ---------- 页眉页脚 ----------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyhead[L]{\footnotesize\color{cHead}\bfseries PTE Core 模考 1B}
+\fancyhead[R]{\footnotesize\color{gray} 口语 · 逐题精讲与技巧模板}
+\fancyfoot[C]{\footnotesize\color{gray}\thepage}
+
+\begin{document}
+
+% --------- 封面 ---------
+\begin{titlepage}
+\thispagestyle{empty}
+\centering
+\vspace*{1.6cm}
+
+{\fontsize{30}{36}\selectfont\bfseries\color{cHead} PTE Core 模考 1B}\\[4mm]
+{\fontsize{17}{20}\selectfont\color{cAccent}\bfseries 口语 · 逐题精讲与技巧模板}\\[3mm]
+{\color{gray} 错题复盘 · 目标满分　·　APEUni / 猩际 PTE 模考}\\[1.2cm]
+
+\begin{tcolorbox}[width=0.52\textwidth, halign=center, enhanced,
+  colback=mSpeak, colframe=mSpeak, arc=6pt, boxrule=0pt, top=10pt, bottom=10pt]
+  {\color{white}\large 口语 Speaking}\\[2pt]
+  {\fontsize{40}{44}\selectfont\bfseries\color{white} 29}\ \ {\color{white!85}\large / 90}
+\end{tcolorbox}
+
+\vspace{1.0cm}
+\begin{flushleft}\small\color{gray}
+\textbf{用途：}把本套模考口语 \textbf{30 道题}（RA 7 · RS 11 · DI 3 · RTS 3 · ASQ 6）逐题拆开——每题给\emph{具体注意点}，
+并附 \textbf{RA / RS / DI / RTS / ASQ 各题型技巧与模板}（重点：RTS 4 句万能模板）。\\
+\textbf{数据源：}口语整理卷的 AI 逐词评测与评分（见 \texttt{整理卷/口语/}）。如与原卷有出入，以原卷为准。
+\end{flushleft}
+\end{titlepage}
+
+% ===================== 口语 =====================
+\ptesection{口语}{Speaking · 逐题精讲与技巧模板}{29}
+
+\ptesub{一、诊断：发音 + 流利度是命门}
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.2}
+{\scorehead
+\begin{tabular}{@{}lccc@{}}
+\textbf{题型} & \textbf{内容/恰当性} & \textbf{发音} & \textbf{流利度} \\
+RA 朗读 ×7 & \good{5/5 全对} & 14–23/90 & \szero{10–15/90} \\
+RS 复述 ×11 & 0.2–2.2/3 & 37–64 & 21–64 \\
+DI 描述图 ×3 & 4.5–4.7/5 & \good{64–73}(最好) & 28–35 \\
+RTS 情景 ×3 & 34–44/90 & 14–25 & 15–24 \\
+\end{tabular}}
+\end{center}
+
+\textbf{你的内容/恰当性基本在线（RA 内容次次满分）——毁掉口语的是发音和流利度，而且是全面性的。}
+最直观的证据：机器把你的话识别成了什么——DI 里 ``male'' 被听成 \hl{may lands}、``age group'' 被听成 \hl{agent group}、``left'' 被听成 \hl{deft}。
+\textbf{给你打分的就是这台机器，它连你说的词都听不出来，发音分自然低。}
+\textbf{好消息：}内容你有，只差“嘴上功夫”——发音和流利度一改，RA/RS/DI/RTS \textbf{全部一起涨}。
+
+\ptesub{二、两个万能底层功（管所有口语题）}
+
+\begin{notebox}\small
+\textbf{流利度（你最大的洞，10–24 分）}——机器评流利度 = 连贯、匀速、不停顿、不重复、不回头。你的三个致命习惯：
+\textbf{(1)} 每 2–4 个词就停；\textbf{(2)} 重复词（``which which''、``the the''）；\textbf{(3)} 读错就回头重读。\\
+\textbf{改法：}成串说（一个意群一口气说完，串内绝不停）；\textbf{绝不回头}（说错继续往前）；绝不重复/重启；
+\textbf{宁可错，不要卡}（机器评分，流畅 $>$ 完美，沉默比说错扣得更狠）。
+\end{notebox}
+
+\begin{notebox}\small
+\textbf{发音（14–25 分）}——清晰元音 + 正确词重音；别一个词一个词蹦，也别拖长音。
+\textbf{练法：影子跟读（shadowing）}——放原音，你贴着同步读，模仿语调节奏。每天 15 分钟，发音和流利一起练。
+\end{notebox}
+
+% ============================================================
+\ptetask{RA 朗读（7 题逐题）}{内容满分，全毁在停顿 —— /\,=\,短停处，\hl{红}\,=\,你读错/重复的词}
+
+\begin{qblock}{RA 1\quad Summerhill School}{发音 14 · 流利 \szero{10} / 90}
+\begin{promptbox}\small
+Summerhill School / was regarded with considerable suspicion / by the educational establishment. \\ Lessons were optional for pupils at the school, / and the government of the school / was carried out by a School Council, / \textbf{of which all the pupils and staff were members,} / with everyone having equal voting rights.
+\end{promptbox}
+\textbf{这题注意：}你重复了 \hl{which which}、满句停顿；\textbf{全句没有一个生词读错——纯流利问题}。``of which all the pupils'' 一口气读完，which 后不停、不重复。
+\end{qblock}
+
+\begin{qblock}{RA 2\quad Statistical chances (universities)}{发音 22 · 流利 \szero{15} / 90}
+\begin{promptbox}\small
+The survey found / that the statistical chances of someone from a poor background / being accepted at one of the country's most respected universities / are far lower than those of a student from a wealthy family. / This means / that the inequalities in society / are likely to be passed down from one generation to the next.
+\end{promptbox}
+\textbf{这题注意：}\hl{statistical} 读错、开头重复 \hl{the the}。statistical 读 /stə-\textbf{TIS}-ti-kl/，重音在 TIS；``are far lower than those of a student'' 连成一串。
+\end{qblock}
+
+\begin{qblock}{RA 3\quad Language diversity}{发音 20 · 流利 \szero{11} / 90}
+\begin{promptbox}\small
+Despite a number of events in recent years / devoted to language diversity, language endangerment and multilingualism, / such as the International Year of Languages, / public awareness of the issues is still remarkably limited. / Only one in four of the population / know that half the languages of the world / are so seriously endangered / that they are unlikely to survive the present century.
+\end{promptbox}
+\textbf{这题注意：}你把 such as 读成了 \hl{as such as}（多了个 as）；\hl{population} 读错；multilingualism 卡。照原文 ``such as''；population /pop-yu-\textbf{LAY}-shn/；multilingualism 提前拆音节练。
+\end{qblock}
+
+\begin{qblock}{RA 4\quad European \& American orchestras}{发音 23 · 流利 \szero{13} / 90}
+\begin{promptbox}\small
+The advantage of the great European and American orchestras / is that they were able to establish their iconic status / in an age when their identity could become entrenched. / There was less competition / and it was easier to create a brand. / Not only did they have the best halls, / they attracted the best musicians, / who tended to stay put.
+\end{promptbox}
+\textbf{这题注意：}\hl{entrenched}、\hl{attracted} 两个词读错；iconic 卡。entrenched /in-\textbf{TRENCHT}/、attracted /ə-\textbf{TRAK}-tid/、iconic /eye-\textbf{KON}-ik/。最后三个意群连贯走。
+\end{qblock}
+
+\begin{qblock}{RA 5\quad Loggerhead turtle}{发音 22 · 流利 \szero{10} / 90}
+\begin{promptbox}\small
+It is time for this young loggerhead turtle to go to work. / We can tether turtles in these little cloth harnesses, / put them onto this tank-like swimming place. / University of North Carolina biologist Ken Lohmann / studies sea turtles that are programmed from birth for an extraordinary journey. / Mother turtles bury the eggs on the beach / and then return to the sea, / and the eggs hatch about 50 to 60 days later.
+\end{promptbox}
+\textbf{这题注意：}\hl{tether} 读错；把 tank-like 读成 \hl{tank and dull}；还把 bury / return \textbf{读成了过去式}。tether /\textbf{TE}-ðə/；``tank-like swimming place'' 当一个词组读；\textbf{严格照原文，别自己改时态、别加词}。
+\end{qblock}
+
+\begin{qblock}{RA 6\quad Agricultural science}{发音 21 · 流利 \szero{12} / 90}
+\begin{promptbox}\small
+While advances in agricultural science / have always been critical to ensuring we help feed the world, / their impact and importance is even greater now / as population grows at a rapid rate / and the availability of arable land steadily declines. / Science and technology solutions are essential / to meeting growing demand for food, / maintaining market competitiveness, / and adapting to and mitigating risks.
+\end{promptbox}
+\textbf{这题注意：}你把 ``and mitigating'' 读成 \hl{land mitigating}、their 读成 its。arable /\textbf{A}-rə-bl/；看清 ``adapting to \textbf{and} mitigating risks''；competitiveness 拆成 com-\textbf{pe}-ti-tive-ness。
+\end{qblock}
+
+\begin{qblock}{RA 7\quad Globalization}{发音 15 · 流利 \szero{10} / 90}
+\begin{promptbox}\small
+The benefits and disadvantages of globalization / are the subject of ongoing debate. / The downside to globalization / can be seen in the increased risk for the transmission of diseases. / Globalization has, of course, led to great good too. / Richer nations can now come to the aid of poorer nations in crisis. / Increasing diversity in many countries / has meant more opportunity to learn about and celebrate other cultures.
+\end{promptbox}
+\textbf{这题注意：}你把 can now 读成 \hl{now can}（词序错）；``Globalization has, of course, led to'' 被你拦腰停断。\textbf{这题也没有生词读错——还是纯停顿}。transmission /tranz-\textbf{MI}-shn/；逗号（of course）轻轻带过别大停。
+\end{qblock}
+
+% ============================================================
+\ptetask{RS 复述（11 题逐题）}{你只复述了开头几个词，中间结尾大片漏掉 —— 铁律：记住一半也要流利说完，绝不沉默}
+
+\begin{notebox}\small
+\textbf{\#1428}（48，你最好的一题）``Today's lecture is canceled because the lecturer is ill.'' —— 漏了 \hl{lecture / canceled / ill}（全是关键词！）。\textbf{注意}：优先抓\textbf{内容词}，这么短的句子目标 100\%。\\[3pt]
+\textbf{\#1430}（32）``I am available this Thursday afternoon.'' —— 漏了 I am、this Thursday。\textbf{注意}：抓住时间词组 ``this Thursday afternoon'' 整块说。\\[3pt]
+\textbf{\#1449}（34）``Tuition fees will vary according to the field of study.'' —— 漏了 tuition、``according to the field of''。\textbf{注意}：``according to the field of study'' 整块记整块说。\\[3pt]
+\textbf{\#1431}（24）``Newspapers around the country are reporting the stories of the president.'' —— 漏了一大片。\textbf{注意}：抓骨架 主+谓+宾：Newspapers → are reporting → stories of the president。\\[3pt]
+\textbf{\#1429}（10，最差之一）``The department determines whether or not the candidates pass.'' —— 你只说了 ``the department'' 就\textbf{全停了}。\textbf{注意}：是\textbf{卡住沉默}才丢这么惨，哪怕只记得 ``department… candidates… pass'' 也要说出来。\\[3pt]
+\textbf{\#1487}（27）``A very basic feature of computing is counting and calculating.'' —— 漏了 feature、counting、calculating。\textbf{注意}：``counting and calculating'' 押韵好记，别丢。\\[3pt]
+\textbf{\#1450}（35）``…the deadline of the submission of proposals has been extended for a week.'' —— 漏了 submission of proposals、been extended。\textbf{注意}：抓主线 ``deadline… extended for a week''。\\[3pt]
+\textbf{\#1451}（28）``All students must return the books to the college library before the end of the term.'' —— 漏了动词/介词。\textbf{注意}：骨架 ``students must return books to library before end of term''。\\[3pt]
+\textbf{\#1448}（42）``The current labor force is more competitive than it has been for a long time.'' —— 漏了 more、than it has been。\textbf{注意}：把比较级 ``more competitive than'' 整体记。\\[3pt]
+\textbf{\#1432}（13，最差）``Foods containing overabundant calories supply little or no nutritional value.'' —— 开头一大片全漏。\textbf{注意}：生词（overabundant/nutritional）吓停了你，抓 ``Foods… calories… no nutritional value'' 说残句也行。\\[3pt]
+\textbf{\#1488}（10，最差）``Contemporary literature works have been broadened and extended through interpretation.'' —— 说了 ``the'' 就没了。\textbf{注意}：退一步抓 ``literature works… broadened… interpretation''，说出来就有分。
+\end{notebox}
+\textbf{RS 总注意：}\textbf{(1)} 听时脑子里\textbf{跟读 + 抓主谓宾}；\textbf{(2)} \textbf{越难越不能沉默}，流利残句也得分；\textbf{(3)} RS 是题库题，多刷高频句。
+
+% ============================================================
+\ptetask{DI 描述图（3 题逐题）}{你发音全口语最高(64–73)、内容也好，缺一套干净能背的模板}
+
+\begin{notebox}\small
+\textbf{DI 万能模板（背熟框架，考场只填数据）：}\\
+\emph{The [bar chart / pie chart / graph / map] shows information about [主题]. According to it, the highest / largest is [\,\_\_\,]. In contrast, the lowest is [\,\_\_\,]. [一个趋势：From [年] to [年], it rose / fell to \_\_]. Overall, [一句总结].}
+\end{notebox}
+
+\begin{qblock}{DI 1\quad Age / Sex 金字塔}{总分 \spart{57} / 90（最高）}
+\textbf{这题注意：}你抓到了数据（25–34 岁女性 ~16.5\%），但 ``age group'' 被听成 \hl{agent group}、``male'' 被听成 \hl{may lands}。
+\textbf{把 male / female / age group 咬清楚}（机器听不懂就没分）；说 ``the highest is females aged 25 to 34, above 16.5 percent''。
+\end{qblock}
+
+\begin{qblock}{DI 2\quad 手机品牌饼图}{总分 \spart{55} / 90}
+\textbf{这题注意：}两个年份（2009 / 2019）对比，你把年份说糊了。\textbf{年份说清楚}；用黄金句
+``In 2009, Apple was the largest at 55 percent. By 2019, Samsung \textbf{rose to} 42 percent while Apple \textbf{fell to} 33 percent.''
+\end{qblock}
+
+\begin{qblock}{DI 3\quad 欧洲地图}{总分 \spart{48} / 90（最低）}
+\textbf{这题注意：}最乱（``left'' 被听成 \hl{deft}），东拉西扯没结构。\textbf{地图题按方位说}：
+``In the center are Germany and Poland. On the left lie Ireland and Portugal. The largest country is Russia, on the right. Overall, the map shows many European countries.''
+\end{qblock}
+
+% ============================================================
+\ptetask{RTS 情景应答（3 题逐题）}{你的核心问题：在复述题目、描述“我要做什么”，没在对人说话}
+
+\begin{notebox}\small
+\textbf{RTS 本质是 ROLEPLAY——假装那些人就在面前，直接对他们说话。}\\
+\textbf{4 句万能模板（背死它）：}\\
+\textbf{(1)} 招呼 + 感谢：\emph{Hey everyone, thanks for [coming / joining us / being part of this]!}\\
+\textbf{(2)} 委婉提出问题：\emph{Just a quick heads-up --- I noticed [问题，用你自己的大白话].}\\
+\textbf{(3)} 提要求 + 理由：\emph{Let's [做某事] so that [好处]. It's important to [做某事] to [避免坏事 / 保持好处].}\\
+\textbf{(4)} 积极收尾 + 号召：\emph{Together, we can [好结果]. Let's [enjoy it / dive in / work together]. Thanks, everyone!}\\[2pt]
+\textbf{三条铁律：}\textbf{(1)} 满嘴 Hey everyone / let's / we，\textbf{禁用 ``I need to remind… / I should say that…''}；\textbf{(2)} 别复述题目原话；\textbf{(3)} 4 句说满 ~40 秒，流利最重要，绕过不会的词别停。
+\end{notebox}
+
+\begin{qblock}{RTS 1\quad Barbecue Party（烧烤·厨具）}{恰当性 \spart{40} · 发音 \szero{21} · 流利 \szero{19}}
+\textbf{这题注意：}你照抄题目原话 ``maintain \hl{your quality}''（生硬）。用大白话 ``keep them in good shape and make sure nobody gets hurt''。
+\begin{modelbox}\small
+Hey everyone, thanks for coming to the barbecue! Just a quick heads-up --- I noticed some kitchen tools are being handled a bit roughly. Let's be careful with them so they stay in good shape and nobody gets hurt. Together we can enjoy the food and clean up after. Thanks, guys!
+\end{modelbox}
+\end{qblock}
+
+\begin{qblock}{RTS 2\quad Team-building（团建·不积极）}{恰当性 \spart{34} · 发音 \szero{14} · 流利 \szero{15}}
+\textbf{这题注意：}你结尾 ``be outgoing, that's all''——\textbf{软、像没说完}。用有力的号召收尾（Let's dive in!）。
+\begin{modelbox}\small
+Hey everyone, thanks for joining today's activity! I noticed a few of us seem a bit disengaged. Let's all jump in, because teamwork is what makes this work. Together we can share ideas and get the most out of today. Let's dive in!
+\end{modelbox}
+\end{qblock}
+
+\begin{qblock}{RTS 3\quad Community Garden（社区花园·荒废）}{恰当性 \spart{44} · 发音 \szero{25} · 流利 \szero{24}（最高）}
+\textbf{这题注意：}结构最接近了，但 ``assigned plots'' 被听成 \hl{asylum plots}、后半句整个糊了。\textbf{慢一点、咬清楚}，严格走模板别即兴。
+\begin{modelbox}\small
+Hey everyone, thanks for being part of our garden project! I noticed some beds are overgrown with weeds. Let's all keep up our own plots so the whole garden can thrive. Together we can build a beautiful green space. Let's get to work!
+\end{modelbox}
+\end{qblock}
+
+% ============================================================
+\ptetask{ASQ 简答（6 题逐题）}{听懂问题，一个词、立刻、清楚地答 —— 都是题库题}
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.3}
+{\scorehead
+\begin{tabularx}{\linewidth}{@{}lXll@{}}
+\textbf{\#} & \textbf{问题} & \textbf{答} & \textbf{注意} \\
+1189 & 真话的反面？ & a lie / falsehood & 说 ``a lie'' 最稳 \\
+1191 & 给报纸写新闻的人？ & a journalist / reporter & reporter 也对 \\
+1190 & 放电影的大平面？ & a screen & 秒答 \\
+1188 & 乐曲中音符的排列？ & a melody / tune & /\textbf{ME}-lə-di/ \\
+1187 & 与头相反方向的部位？ & the foot / feet & 别想复杂 \\
+1126 & 研究岩石的科学？ & geology & /ji-\textbf{OL}-ə-ji/ \\
+\end{tabularx}}
+\end{center}
+
+% ============================================================
+\ptesub{口语提分优先级 + 每日练习}
+
+\begin{center}\small
+\renewcommand{\arraystretch}{1.25}
+{\scorehead
+\begin{tabularx}{\linewidth}{@{}clX@{}}
+\textbf{优先} & \textbf{练什么} & \textbf{怎么练} \\
+1 & \textbf{流利度（贯穿全部）} & 成串说、不停顿、不重复、不回头：每天影子跟读 15 分钟 + 录音回放对比 \\
+2 & \textbf{发音} & 词重音 + 清晰元音，把读错的词逐个跟读纠正 \\
+3 & \textbf{背 RTS 模板 + DI 模板} & 这俩立刻见效 \\
+4 & \textbf{RA / RS / ASQ 刷题库} & 都是固定题，练熟 = 送分 \\
+\end{tabularx}}
+\end{center}
+
+\begin{notebox}\small
+\textbf{一句话总纲：}你口语 29 分\textbf{不是没内容，是机器听不清你说什么}。把\textbf{流利度}（不停不重复不回头）和\textbf{发音}（影子跟读）练上去，
+再背死 \textbf{RTS 4 句模板 + DI 模板}，口语翻倍很现实。
+\end{notebox}
+
+\vspace{2mm}
+{\footnotesize\color{gray}\emph{本笔记依据 PTE Core 模考 1B 口语 30 题逐题复盘整理。AI 逐词评测与评分见原整理卷；如有出入以原卷为准。}}
+
+\end{document}
